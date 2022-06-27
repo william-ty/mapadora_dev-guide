@@ -1,0 +1,509 @@
+@startuml architecture_fonctionnelle
+
+scale 5000 width
+scale 5000 height
+    left to right direction
+
+package Domaines {
+top to bottom direction
+rectangle Compte_utilisateur 
+rectangle Participants_voyage
+rectangle Voyage 
+rectangle Album_Journal 
+rectangle Planification 
+rectangle Site_vitrine 
+rectangle Tâches
+rectangle Documents
+rectangle Partage_voyage
+}
+
+package Fonctionnalités {
+top to bottom direction
+
+
+    rectangle Partie_publique[
+        Consulter un voyage public
+        ----
+        Cloner un voyage public
+    ]
+
+    rectangle Album_voyage[
+    CRUD_article_journal
+    ----
+    CRD_photos_album
+    ----
+    Consultation album avec lien
+    ]
+
+   
+
+    rectangle CRUD_utilisateur 
+    rectangle Login_utilisateur 
+
+    package CRUD_voyage[
+    A la création d'un voyage, un itinéraire est 
+    automatiquement créé. Cet itinéraire est un 
+    objet élément
+    ]
+
+    package Position[
+        Autorisation de stocker 
+        la position utilisateur
+        Mémoriser la position 
+        utilisateur
+    ]
+
+package CRUD_tâches_tags[
+        ajouter des tâches dans la liste
+        des tâches du voyage
+        associer ces tâches à des tags déjà 
+        créés ou créés par l'utilisateur
+    ]
+
+    rectangle CRD_participant
+
+    rectangle Notifier_participant
+
+    package CRD_documents[
+        Un document peut être associé soit à un élément 
+        (step, interestpoint, trip, itinéraire = voyage)
+    ]
+
+    package Planification_voyage [
+        CRUD InterestPoint
+        ----
+        CRUD Step
+        ----
+        Trajets
+        ----
+        Ordonner les étapes
+        ---- 
+        Ordonner les InterestPoint par jour. 
+        ---- 
+        Voir le résumé du voyage    
+    ]
+    
+}
+
+
+package API{
+top to bottom direction
+interface identifyClient
+interface isAutorized
+
+rectangle Traveler 
+rectangle Travel
+rectangle Participant
+rectangle Document
+rectangle Task
+rectangle TaskListTag
+rectangle Photo
+rectangle Diary
+rectangle Step
+rectangle InterestPoint
+rectangle Trip
+
+rectangle Traveler_controller 
+rectangle Travel_controller
+rectangle Participants_controller
+rectangle Document_controller
+rectangle Task_controller
+rectangle Tasklisttag_controller
+rectangle Diary_controller
+rectangle Photo_controller
+rectangle InterestPoint_controller
+rectangle Step_controller
+rectangle Trip_controller 
+rectangle Position_controller
+
+package InterestPoint_routes [
+    GET
+    ----
+    POST
+    ----
+    PUT
+    ----
+    DELETE
+    ----
+    addInterestPointToStep
+    ----
+    removeInterestPointFromStep
+ ]
+
+package Step_routes [
+    GET
+    ----
+    POST
+    ----
+    PUT
+    ----
+    DELETE
+    ----
+    findAllAssociatedInterestPoints
+    ----
+    reorder
+ ]
+
+ package Trip_routes [
+    GET
+    ----
+    POST
+    ----
+    PUT
+    ----
+    DELETE
+ ]
+
+package Document_routes [
+    GET
+    ----
+    POST
+    ----
+    DELETE
+ ]
+package Participant_routes [
+    GET
+    ----
+    POST
+    ----
+    DELETE
+ ]
+package Traveler_routes [
+    GET
+    ----
+    POST
+    ----
+    PUT
+    ----
+    DELETE
+    ----
+    WHOAMI
+    ----
+    SIGNIN
+    ----
+    SIGNUP
+    ----
+    INVITATIONS
+    ----
+    INVITATIONS/COUNT
+ ]
+ package Travel_routes [
+    GET
+    ----
+    POST
+    ----
+    PUT
+    ----
+    DELETE
+    ----
+    MYTRAVELS
+    ----
+    ADMIN
+    ----
+    ISAUTHORIZED
+    ----
+    PUBLICTRAVELS
+    ----
+    CLONE
+    ----
+    GETALBUMSTATUS
+ ]
+
+package Task_routes [
+    GET
+    ----
+    POST
+    ----
+    PUT
+    ----
+    DELETE
+    ----
+    associateTagToTask
+    ----
+    addTags
+    ----
+    removeTags
+ ]
+
+ package Tasklisttag_routes [
+    GET
+    ----
+    POST
+    ----
+    PUT
+    ----
+    DELETE
+ ]
+
+ package Diary_routes [
+    GET
+    ----
+    POST
+    ----
+    PUT
+    ----
+    DELETE
+ ]
+
+ package Photo_routes [
+    GET
+    ----
+    POST
+    ----
+    PUT
+    ----
+    DELETE
+ ]
+
+  package Position_routes [
+    GET
+    ----
+    POST
+    ----
+    PUT
+    ----
+    DELETE
+ ]
+
+ rectangle mailer_service
+
+}
+
+package WEB {
+top to bottom direction
+interface AuthProvider
+interface api_web
+
+
+rectangle Signup 
+rectangle Signin 
+
+rectangle TravelCards
+
+rectangle Participants
+rectangle Notifications
+
+rectangle Todos
+rectangle Tags
+
+rectangle DocumentImport
+
+rectangle Album
+
+rectangle Map
+
+rectangle MapItems
+
+rectangle Planning
+
+}
+
+package MOBILE {
+top to bottom direction
+interface api_mobile
+interface AuthProvider
+
+
+rectangle RegisterScreen 
+rectangle LoginScreen 
+
+rectangle ChooseTravel
+
+rectangle TaskList
+
+rectangle DocumentList
+
+rectangle Stepper
+
+rectangle screens_album
+
+rectangle Travel_tracking
+
+}
+
+'Partage lien voyage 
+
+'Site vitrine
+Site_vitrine --> Partie_publique
+Partie_publique --> TravelCards
+TravelCards --> api_web
+api_web --> Travel_routes
+
+'Suivi du voyage 
+Voyage --> Position
+Position --> Travel_tracking
+Travel_tracking --> api_mobile
+api_mobile --> Position_routes
+Position_routes --> identifyClient
+identifyClient --> Position_controller
+Position_controller --> Position
+
+'Planification
+
+Planification --> Planification_voyage
+
+Planification_voyage --> Stepper
+Planification_voyage --> Map
+Planification_voyage --> MapItems
+Planification_voyage --> Planning
+
+Stepper --> api_mobile
+Map --> api_web
+MapItems --> api_web
+Planning --> api_web
+
+api_web --> InterestPoint_routes
+api_web --> Step_routes
+api_web --> Trip_routes
+api_mobile --> InterestPoint_routes
+api_mobile --> Step_routes
+api_mobile --> Trip_routes
+
+InterestPoint_routes --> identifyClient
+Step_routes --> identifyClient
+Trip_routes --> identifyClient
+
+identifyClient --> InterestPoint_controller
+identifyClient --> Step_controller
+identifyClient --> Trip_controller
+
+InterestPoint_controller --> InterestPoint
+Step_controller --> Step
+Trip_controller --> Trip
+
+'album 
+Album_Journal -->  Album_voyage
+
+Album_voyage --> Album
+Album_voyage --> screens_album
+
+Album --> api_web
+screens_album --> api_mobile
+
+api_web --> Photo_routes
+api_web --> Diary_routes
+
+api_mobile --> Photo_routes
+api_mobile --> Diary_routes
+
+Photo_routes --> identifyClient
+Diary_routes --> identifyClient
+
+identifyClient --> Photo_controller
+identifyClient --> Diary_controller
+
+Photo_controller --> Photo
+Diary_controller --> Diary
+
+'documents
+Documents --> CRD_documents
+
+CRD_documents --> DocumentImport
+CRD_documents --> DocumentList
+
+DocumentImport --> api_web
+DocumentList --> api_mobile
+
+api_web --> Document_routes
+api_mobile --> Document_routes
+
+Document_routes --> identifyClient
+identifyClient --> Document_controller
+
+Document_controller --> Document
+
+'tasklist
+Tâches --> CRUD_tâches_tags
+
+CRUD_tâches_tags --> Todos
+CRUD_tâches_tags --> Tags
+CRUD_tâches_tags --> TaskList
+
+Todos --> api_web
+Tags --> api_web
+TaskList --> api_mobile 
+
+api_web --> Task_routes
+api_mobile --> Tasklisttag_routes
+
+Task_routes --> identifyClient
+Tasklisttag_routes --> identifyClient 
+
+identifyClient --> Task_controller
+identifyClient --> Tasklisttag_controller
+
+Task_controller --> Task
+Tasklisttag_controller --> TaskListTag
+
+'Participants
+Participants_voyage --> CRD_participant
+Participants_voyage --> Notifier_participant
+
+CRD_participant --> Participants
+Notifier_participant --> Notifications
+
+Participants --> api_web
+Notifications --> api_web
+
+api_web --> Participant_routes
+
+Participant_routes --> identifyClient
+Traveler_routes --> identifyClient
+
+identifyClient --> Participants_controller
+
+Participants_controller --> mailer_service
+Participants_controller --> Participant
+
+'Voyages
+
+Voyage --> CRUD_voyage
+
+CRUD_voyage--> TravelCards
+CRUD_voyage --> ChooseTravel
+
+TravelCards --> api_web 
+ChooseTravel --> api_mobile
+
+api_web --> Travel_routes
+api_mobile --> Travel_routes
+
+
+Travel_routes --> identifyClient
+identifyClient --> Travel_controller
+Travel_controller --> Travel
+
+
+'Comptes_utilisateurs
+Compte_utilisateur --> CRUD_utilisateur
+Compte_utilisateur --> Login_utilisateur
+
+Login_utilisateur --> Signin
+Login_utilisateur --> LoginScreen
+
+CRUD_utilisateur --> Signup
+CRUD_utilisateur --> RegisterScreen
+
+
+
+RegisterScreen --> api_mobile
+LoginScreen --> api_mobile
+Signin --> api_web
+Signup --> api_web
+
+api_mobile --> Traveler_routes
+api_web --> Traveler_routes
+
+Traveler_routes --> identifyClient
+identifyClient --> Traveler_controller 
+Traveler_controller --> Traveler
+
+identifyClient --> isAutorized
+
+
+
+
+
+
+
+@enduml

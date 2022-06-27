@@ -1,0 +1,60 @@
+@startuml architecture_fonctionnalites
+
+rectangle Application {
+    rectangle Dashboard as D{
+        
+
+        rectangle Notifications as N{
+            usecase "Gère ses invitations" as N1
+        }
+    
+        rectangle Voyage as V {
+            rectangle Administration as VA{
+                usecase "Invite des participants" as VA1
+                usecase "Ajoute des documents au voyage" as VA2 
+                usecase "Ajoute des tâches" as VA3
+                usecase "Démarre un voyage" as VA4
+                usecase "Edite ou supprime un voyage" as VA5
+                usecase "Supprime des participants" as VA6
+            }
+             
+            rectangle Journal as VJ{
+                usecase "Ajoute des photos au voyage" as VJ1
+                usecase "Ajoute des articles" as VJ2
+                usecase "Génère et envoie un lien de partage du journal" as VJ3
+                usecase "Edite, supprime des articles et des photos du journal" as VJ4
+                usecase "Révoque le lien de partage" as VJ5
+            }
+            rectangle Planning as VP{
+                usecase "Créé des trajets, des points d'intérêts et des étapes" as VP1
+                usecase "Ajoute des documents aux trajets, points d'intérêts, étapes" as VP2
+                usecase "Ordonne les points d'intérêts et les étapes" as VP3
+            }
+
+            
+            
+            
+        }
+
+        rectangle Compte_utilisateur as DUC{
+            usecase "Créé un voyage" as DUC2
+            usecase "Clone un voyage public" as DUC3
+            usecase "Edite les informations de son compte" as DUC4
+            usecase "Supprime son compte" as DUC5
+            usecase "Créé un compte" as DUC1
+
+        }
+
+        
+    }
+    rectangle Site_vitrine as SV{
+        usecase "Consulte les voyages publics" as SV1
+        usecase "Accède à la page d'accueil" as SV2
+    }
+
+    
+    
+}
+
+
+@enduml

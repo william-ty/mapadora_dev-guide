@@ -1,0 +1,198 @@
+    @startuml architecture_API
+
+left to right direction
+
+package data {
+    database database [
+        postgreSql
+        ----
+        postGis
+    ]
+}
+
+package API{
+
+folder models { 
+entity index
+
+entity diary 
+entity document 
+entity element
+entity interestpoint
+entity itinerary
+entity participant
+entity permission
+entity photo
+entity position
+entity step
+entity task
+entity tasklist
+entity tasklisttag
+entity transportmode
+entity travel
+entity traveler
+entity travelreview
+entity traveltag
+entity trip 
+}
+
+element <|-- interestpoint
+element <|-- step
+element <|-- trip
+element <|-- itinerary
+
+index <--> data : ORM sequelize
+
+
+folder controllers {
+    control diary_controller
+    control document_controller
+    control element_controller
+    control interestpoint_controller
+    control itinerary_controller
+    control mailer_service
+    control participant_controller
+    control photo_controller
+    control photo_service
+    control position_controller
+    control step_controller
+    control task_controller
+    control tasklist_controller
+    control tasklisttag_controller
+    control transportmode_controller
+    control transportmode_controller
+    control travel_controller
+    control traveler_controller
+    control travelreview_controller
+    control traveltag_controller
+    control trip_controller
+    control app_controller
+    control app_travel_controller
+}
+
+
+diary --> diary_controller
+document --> document_controller
+interestpoint --> interestpoint_controller
+itinerary --> itinerary_controller
+participant --> participant_controller
+photo --> photo_controller
+position --> position_controller
+step --> step_controller
+task --> task_controller
+tasklist --> tasklist_controller
+tasklisttag --> tasklist_controller
+transportmode --> transportmode_controller
+travel --> travel_controller
+traveler --> traveler_controller
+traveltag --> traveltag_controller
+trip --> trip_controller
+
+
+app_travel_controller <|-- document_controller
+app_travel_controller <|-- step_controller
+app_travel_controller <|-- interestpoint_controller
+app_travel_controller <|-- trip_controller
+
+app_controller <|-- element_controller
+app_controller <|-- itinerary_controller
+app_controller <|-- participant_controller
+app_controller <|-- photo_controller
+app_controller <|-- position_controller
+app_controller <|-- diary_controller
+app_controller <|-- task_controller
+app_controller <|-- tasklist_controller
+app_controller <|-- tasklisttag_controller
+app_controller <|-- transportmode_controller
+app_controller <|-- travel_controller
+app_controller <|-- traveler_controller
+app_controller <|-- travelreview_controller
+app_controller <|-- traveltag_controller
+
+
+photo_controller <--> photo_service
+participant_controller <--> mailer_service
+
+
+folder routes {
+    boundary diary_routes
+    boundary documents_routes
+    boundary interestpoint_routes
+    boundary participant_routes
+    boundary photo_routes
+    boundary position_routes
+    boundary step_routes
+    boundary task_routes
+    boundary tasklist_routes
+    boundary taslisttag_routes
+    boundary transportmode_routes
+    boundary travel_routes
+    boundary traveler_routes
+    boundary travelreview_routes
+    boundary traveltag_routes
+    boundary trip_routes
+
+    rectangle CRUD [
+    GET
+    ----
+    POST
+    ----
+    PUT
+    ----
+    DELETE
+    ----
+    ...others
+]
+
+
+}
+
+folder utils [
+    auth
+    ----
+    enumPermission
+    ----
+    errors_middelwares
+    ----
+    travel_util
+]
+
+diary_controller --> diary_routes
+document_controller --> documents_routes
+interestpoint_controller --> interestpoint_routes
+participant_controller --> participant_routes
+photo_controller --> photo_routes
+position_controller --> position_routes
+step_controller --> step_routes
+task_controller --> task_routes
+tasklist_controller --> tasklist_routes
+travel_controller --> travel_routes
+traveler_controller --> traveler_routes
+traveltag_controller --> traveltag_routes
+trip_routes --> trip_controller
+
+
+
+
+
+
+diary_routes --> CRUD
+documents_routes --> CRUD
+interestpoint_routes --> CRUD
+participant_routes --> CRUD
+photo_routes --> CRUD
+position_routes --> CRUD
+step_routes --> CRUD
+task_routes --> CRUD
+tasklist_routes --> CRUD
+travel_routes --> CRUD
+traveler_routes --> CRUD
+traveltag_routes --> CRUD
+trip_controller --> CRUD
+
+}
+
+
+
+
+@enduml

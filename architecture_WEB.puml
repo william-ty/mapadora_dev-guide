@@ -1,0 +1,74 @@
+
+@startuml architecture_WEB
+package WebApp{
+    folder api_ {
+        interface api
+        card util
+    }
+
+    api <--> CRUD
+
+    folder components{
+        component Album
+        component Dashboard
+        component Error
+        component Home
+        component Logo
+        component Map
+        component MapItems
+        component Menu
+        component Planning
+        component PrivateTravels
+        component PublicTravels
+        component Signin
+        component Tags
+        component TravelCards
+        component TravelElements
+        file BasicTimeLine
+        file Copyright
+        file Footer
+        file PhotoCredit
+
+        
+    }
+    folder contents{
+        file creditsContent
+        file homeContent
+    }
+    folder model {
+        entity Credentials
+        entity Diary
+        entity Document
+        entity Element
+        entity InterestPoint
+        entity Participant
+        entity Photo
+        entity Point
+        entity Point2d
+        entity Step
+        entity Task
+        entity TaskListTag
+        entity TransportMode
+        entity Travel
+        entity Traveler
+        entity Trip
+    }
+    folder provider {
+        control AuthProvider
+        control DataProvider
+        control MainDataProvider
+        control TravelerProvider
+    }
+    folder utility {
+        component alert
+        component loading
+        component map
+        component planner
+    }
+    folder views {
+        frame ViewHomePublicTravels
+        frame ViewHomeTravel
+    }
+}
+
+@enduml

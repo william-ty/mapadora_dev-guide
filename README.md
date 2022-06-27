@@ -171,12 +171,3 @@ Informations principales (l'application mobile présente une arborescence simila
 - Le dossier `/src/theme/` reférence les modifications faites au thème Material UI et les variables facilement éditables pour changer l'identité graphique du site.
 - Le fichier `/app.tsx/` est le composant de plus haut niveau, il sert de conteneur pour le reste de l'application.
 
-______________________________________________
-______________________________________________
-
-#### Sujet 
-
-Une documentation à destination d’un développeur ou d’une équipe de développement qui voudrait reprendre votre projet.
-
-L’objectif est, pour chaque application, d’avoir à disposition un guide qui précise l’organisation générale du code afin de permettre à un développeur souhaitant modifier ou ajouter une fonctionnalité de savoir rapidement où commencer son travail.
-Encore une fois, mettez-vous dans la peau de quelqu’un dont la mission serait de faire ce travail d’ajout ou de modification de vos applications et produisez la documentation que vous auriez aimé lire pour vous permettre de comprendre l’organisation du code et de démarrer sereinement.
